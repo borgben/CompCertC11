@@ -1,0 +1,31 @@
+DIGEST 0b81f96b364637799345647216b4c1d9
+Fvalue
+R24:31 Coq.Arith.PeanoNat <> <> lib
+ind 45:49 <> value
+constr 63:71 <> VConcrete
+constr 90:95 <> VUndef
+constr 110:117 <> VUnalloc
+R78:81 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R75:77 Coq.Init.Datatypes <> nat ind
+R82:86 value <> value:1 ind
+R102:106 value <> value:1 ind
+R122:126 value <> value:1 ind
+scheme 45:49 <> value_rect
+scheme 45:49 <> value_ind
+scheme 45:49 <> value_rec
+scheme 45:49 <> value_sind
+def 141:152 <> value_eq_dec
+R171:175 value <> value ind
+binder 165:165 <> x:3
+binder 167:167 <> y:4
+R178:178 Coq.Init.Specif <> ::type_scope:'{'_x_'}'_'+'_'{'_x_'}' not
+R184:188 Coq.Init.Specif <> ::type_scope:'{'_x_'}'_'+'_'{'_x_'}' not
+R195:195 Coq.Init.Specif <> ::type_scope:'{'_x_'}'_'+'_'{'_x_'}' not
+R180:182 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R179:179 value <> x:3 var
+R183:183 value <> y:4 var
+R190:193 Coq.Init.Logic <> ::type_scope:x_'<>'_x not
+R189:189 value <> x:3 var
+R194:194 value <> y:4 var
+R230:239 Coq.Arith.PeanoNat Nat eq_dec thm
+R230:239 Coq.Arith.PeanoNat Nat eq_dec thm

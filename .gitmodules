@@ -1,0 +1,3 @@
+[submodule "rocq_proofs/imm"]
+	path = rocq_proofs/imm
+	url = git@github.com:borgben/imm.git
