@@ -1,0 +1,5 @@
+# Keep top-level source files in the empty logical namespace when building.
+# This is intentionally kept out of _CoqProject because some IDE clients do
+# not handle an explicitly empty -Q logical path correctly.
+COQLIBS := -Q . '' -R imm/src imm
+COQLIBS_NOML := -Q . '' -R imm/src imm

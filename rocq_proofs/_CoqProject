@@ -2,3 +2,5 @@
 
 value.v
 memory_model.v
+thread_semantics.v 
+mem_comp.v

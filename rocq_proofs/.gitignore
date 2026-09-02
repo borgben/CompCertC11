@@ -1,0 +1,17 @@
+# Rocq build artifacts
+*.vo
+*.vos
+*.vok
+*.vio
+*.glob
+.*.aux
+.lia.cache
+.coq-native/
+
+# Generated build files
+Makefile.coq
+.Makefile.coq.d
+Makefile.coq.conf
+
+# Editor backup files
+*~
