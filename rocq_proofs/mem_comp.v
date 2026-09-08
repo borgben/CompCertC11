@@ -166,30 +166,16 @@ Module Composition (Ev : Events ConcreteValue).
             |}
             .
 
-
-    (*************************************************************)
-    (* Initial system state                                      *)
-    (*************************************************************)
-
-    Parameter initial_execution : execution -> Prop.
-
     Parameter main_thread : Ev.thread_id.
 
     Inductive initial_system_state : system_state -> Prop :=
     | Initial_System_State :
-        forall
-          G
-          state,
-
-          initial_execution G ->
-
+        forall state,
+          MM.valid_execution M MM.initial_execution ->
           S.initial_state state ->
-
           initial_system_state
-
             {|
-              sys_graph := G;
-
+              sys_graph := MM.initial_execution;
               sys_threads :=
                 fun thread =>
                   if thread_id_eq_dec thread main_thread
@@ -197,28 +183,8 @@ Module Composition (Ev : Events ConcreteValue).
                   else None
             |}.
 
-    Definition final_system_state
-        (system : system_state)
-        (result : S.result)
-        : Prop :=
-
-      exists state,
-
-        sys_threads system main_thread =
-          Some state /\
-
-        S.final_state
-          state
-          result.
-
-    Definition tau_step
-        (system system' : system_state)
-        : Prop :=
-
-      system_step
-        system
-        WSTau
-        system'.
+    Definition final_system_state (system : system_state) (result : S.result) : Prop :=
+      exists state, sys_threads system main_thread = Some state /\ S.final_state state result.
 
     End WithMemoryModel.
 

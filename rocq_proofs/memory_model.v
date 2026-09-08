@@ -16,8 +16,7 @@ Module ConcreteValue <: ValueSig.
 
 End ConcreteValue.
 
-Module MemoryModel
-    (Ev : Events ConcreteValue).
+Module MemoryModel (Ev : Events ConcreteValue).
 
   Module Import Ex := Execution ConcreteValue Ev.
 
@@ -37,8 +36,30 @@ Inductive memory_action : Type :=
 | MMalloc    : Ev.thread_id -> Ev.location -> memory_action
 | MFree      : Ev.thread_id -> Ev.location -> memory_action.
 
-  Record extends_execution
-      (G G' : execution) (e : Ev.actid) : Prop := {
+  Definition initial_execution : execution :=
+    {| acts_set :=
+         fun e =>
+           match e with
+           | Ev.InitEvent _ => True
+           | Ev.ThreadEvent _ _ => False
+           end;
+       threads_set := fun thread => thread = Ev.tid_init;
+       lab :=
+         fun e =>
+           match e with
+           | Ev.InitEvent x => write_label x Ev.Opln VUnalloc
+           (*TODO: I don't know how I feel about this work-around... *)
+           | Ev.ThreadEvent _ _ => Ev.Afence Ev.Opln
+           end;
+       rmw := ∅₂;
+       data := ∅₂;
+       addr := ∅₂;
+       ctrl := ∅₂;
+       rmw_dep := ∅₂;
+       rf := ∅₂;
+       co := ∅₂ |}.
+
+  Record extends_execution (G G' : execution) (e : Ev.actid) : Prop := {
     extends_G': acts_set G' e; 
     extends_fresh :
       ~ acts_set G e;
@@ -239,6 +260,8 @@ Inductive memory_action : Type :=
     exists x0. 
     repeat split...  
   Qed.
+
+  (** TODO: extends_execution_W *)
 
   End WithModel.
 
