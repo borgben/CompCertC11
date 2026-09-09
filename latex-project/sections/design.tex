@@ -179,7 +179,7 @@ The \(\text{neverAllocated}_{\Psi}\), is defined to be true if the only event on
 
 \end{mathpar}
 
-\subsection{Thread Creation}
+\subsection{Thread Creation and Joining}
 The above rules are purposefully missing the rule for thread creation. Since the intention is to use IMM definition of execution graphs, it will be necessary to alter the current definition to allow for arbitrarily nested thread lineage. 
 IMM in its current state doesn't allow for thread lineage, all threads are equal and independent of each other. In order to accurately express the semantics of thread creation, we need to add an ordering between threads that 
 reflects the parent-child relationship between threads. This is necessary to ensure that the memory events of a child thread are not visible to its parent thread until the child thread has been created.
@@ -191,19 +191,24 @@ Thread creation can then be modelled in the operational semantics by creating tw
 Both the newly created threads will be automatically synchronised with their parent, since there is a po edge from the last event of the parent thread to the first event of the child thread, but not with each other. 
 Dually, the joining of threads can be modelled by synchronising the continuation of the parent thread with the completion of the child thread, ie. there is a po edge from the last event of the child thread to the join event of the parent thread. \\\\ 
 
-It is important to note that both creation and joining of threads create logically new threads to model the continuation of the parent thread after the creation or joining event. 
+It is important to note that both creation and joining of threads create logically new threads to model the continuation of the parent thread after the creation or joining event. \\\\ 
+
+The \textit{ext\_sb} relation in IMM, from which the \textit{po} relation is derived would be defined as follows,  
+\[
+    \forall (\theta, \gamma) \in E_{\Psi} \: \: \theta ; \text{ext\_sb}; \gamma \iff tid(\theta) \leq tid(\gamma) \wedge (\text{if} \: tid(\theta) = tid(\gamma) \: \text{then} \: uid(\theta) < uid(\gamma))
+\]
 \subsection{Memory Model Lemmas}
 
 For each of the rules that add a read event, the following predicate is satisfied as a consequence of RC11 consistency and the definition of \(E_{\Psi'}\).
 
 \[
-    \exists \theta \: \gamma \text{ s.t. } \theta \in E_{\Psi} \wedge \gamma \in E_{\Psi} \wedge \gamma = \text{W x type v} \wedge V_{\Psi'} = V_{\Psi} \cup \{ \theta ; \text{po}; \delta, \gamma; \text{rf}; \delta \} 
+    \exists (\theta, \gamma) \in E_{\Psi} \: \text{s.t.} \: \gamma = \text{W x type v} \wedge V_{\Psi'} = V_{\Psi} \cup \{ \theta ; \text{po}; \delta, \gamma; \text{rf}; \delta \} 
 \]
 
 Similarly,  for each rule that adds a write event, the following predicate is satisfied as a consequence of RC11 consistency and the definition of \(E_{Psi'}\). 
 
 \[
-    \exists \theta \: \gamma \text{ s.t. } \theta \in E_{\Psi} \wedge \gamma \in E_{\Psi} \wedge \text{is\_write}(\gamma)  \wedge V_{\Psi'} = V_{\Psi} \cup \{ \theta ; \text{po}; \delta, \gamma; \text{mo}; \delta \} 
+    \exists (\theta, \gamma) \in E_{\Psi} \: \text{s.t.} \: \text{is\_write}(\gamma)  \wedge V_{\Psi'} = V_{\Psi} \cup \{ \theta ; \text{po}; \delta, \gamma; \text{mo}; \delta \} 
 \]  
 
 The operational memory model LTS parameterised by the consistency axiom \(M\) is then composed with the thread-local LTS, parameterised by a thread-local small-step semantics \(S\), to define the whole-system semantics of a program. 

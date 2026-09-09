@@ -67,6 +67,7 @@ Inductive memory_action : Type :=
       forall a, acts_set G' a <-> acts_set G a \/ a = e;
     extends_lab :
       forall a, acts_set G a -> lab G' a = lab G a;
+    (* Ensures e is the 'maximal' action in thread tid. *)
     extends_sb :
       forall a,
         acts_set G a ->
